@@ -4,6 +4,7 @@ export default {
 };
 
 var elements;
+var symbols = {};
 
 await loadPeriodicTable();
 
@@ -12,45 +13,79 @@ await loadPeriodicTable();
 
 async function loadPeriodicTable() {
 	elements = await (await fetch("periodic-table.json")).json();
+	for (let element of elements) {
+		symbols[element.symbol.toLowerCase()] = element;
+	}
 }
 
-function check(inputWord) {
-	if (inputWord.length > 0) {
-		// check every element for a symbol matching the next
-		// 1-2 characters of the input word
-		for (let element of elements) {
-			let symbol = element.symbol.toLowerCase();
-			if (symbol.length <= inputWord.length) {
-				if (inputWord.slice(0,symbol.length) == symbol) {
-					// more characters in the input word to try
-					// to match to symbols?
-					if (inputWord.length > symbol.length) {
-						// recurse to check the remainder of the
-						// input word
-						let res = check(inputWord.slice(symbol.length));
+function findCandidates(inputWord) {
+	var oneLetterSymbols = [];
+	var twoLetterSymbols = [];
 
-						// was the check successful?
-						if (res.length > 0) {
-							return [ symbol, ...res ];
-						}
-					}
-					else {
-						return [ symbol ];
-					}
-				}
+	for (let i = 0; i < inputWord.length; i++) {
+		// collect one letter symbol options
+		if (inputWord[i] in symbols && !oneLetterSymbols.includes(inputWord[i])) {
+			oneLetterSymbols.push(inputWord[i]);
+		}
+
+		// collect two letter symbol options
+		if (i <= (inputWord.length - 2)) {
+			let two = inputWord.slice(i,i+2);
+			if (two in symbols && !twoLetterSymbols.includes(two)) {
+				twoLetterSymbols.push(two);
 			}
 		}
 	}
 
+	return [ ...twoLetterSymbols, ...oneLetterSymbols ];
+}
+
+function spellWord(candidates,charsLeft) {
+	if (charsLeft.length == 0) {
+		return [];
+	}
+	else {
+		// check for two letter symbols first
+		if (charsLeft.length >= 2) {
+			let two = charsLeft.slice(0,2);
+			let rest = charsLeft.slice(2);
+			if (candidates.includes(two)) {
+				if (rest != "") {
+					let result = [ two, ...spellWord(candidates,rest) ];
+					if (result.join("") == charsLeft) {
+						return result;
+					}
+				}
+				else {
+					return [ two ];
+				}
+			}
+		}
+		// now check for one letter symbols
+		if (charsLeft.length >= 1) {
+			let one = charsLeft[0];
+			let rest = charsLeft.slice(1);
+			if (candidates.includes(one)) {
+				if (rest != "") {
+					let result = [ one, ...spellWord(candidates,rest) ];
+					if (result.join("") == charsLeft) {
+						return result;
+					}
+				}
+				else {
+					return [ one ];
+				}
+			}
+		}
+	}
 	return [];
 }
 
+function check(inputWord) {
+	var candidates = findCandidates(inputWord);
+	return spellWord(candidates,inputWord);
+}
+
 function lookup(elementSymbol) {
-	// search all elements to find the matching
-	// symbol (lowercase)
-	for (let element of elements) {
-		if (element.symbol.toLowerCase() == elementSymbol) {
-			return element;
-		}
-	}
+	return symbols[elementSymbol];
 }
