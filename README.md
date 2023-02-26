@@ -28,7 +28,7 @@ The goal of this tool is to check if an input word can be "spelled" with the per
 
     * The `lookup(..)` function accepts a symbol (as a string) and returns the periodic table element's entry/info, used to render the spelling as periodic table elements.
 
-4. When you're ready, or if you get stuck in your own implementation, check out the `option-1` and `option-2` branches and compare your solution to the ones provided.
+4. When you're ready, or if you get stuck in your own implementation, check out the `option-1`, `option-2`, and `option-3` branches and compare your solution to the ones provided.
 
 ## Acknowledgments
 
