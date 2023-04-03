@@ -36,6 +36,12 @@ This workshop problem is similar to/inspired by [ChemSpeller](https://www.chemsp
 
 The JSON file holding periodic table elements was adapted from: https://github.com/Bowserinator/Periodic-Table-JSON/blob/master/PeriodicTableJSON.json
 
+## Workshop Resources
+
+This repository is part of my "Thinking & Coding Algorithms" workshop, which has been presented at a number of public JS/web conferences, as well as for private corporate training engagements. In addition, it is included in my [Frontend Masters course on algorithms and data structures](https://frontendmasters.com/courses/algorithms-practice/).
+
+Please note that as this material evolves/improves over time, there may be changes to the branch names (e.g., "Option-1", "Option-2b", etc) to make room for these changes while preserving (as much as possible) the repository state as presented in various different workshops. When that current state appears to have diverged, please consult the git commit history to access older versions of files/resources.
+
 ## License
 
 All code and documentation are (c) 2023 Kyle Simpson and released under the [MIT License](http://getify.mit-license.org/). A copy of the MIT License [is also included](LICENSE.txt).
